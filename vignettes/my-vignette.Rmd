@@ -1,0 +1,158 @@
+---
+title: "Fitting probit models with crossed random effects"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Fitting probit models with crossed random effects}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE, cache = TRUE,
+  comment = "#>"
+)
+```
+
+Some examples on the estimation of probit models with crossed random effects using the scalable all-row-col (ARC) estimation approach proposed in Bellio, Gosh, Owen and Varin (2023) are given in the following. The method is implemented in the `arcProbit` package, so we start by loading the package.
+
+```{r setup, message = FALSE}
+library(arcProbit)
+```
+
+## The case of binary data
+We consider first the case of binary data. The ARC estimator was designed for scalable estimation with large-scale data, but for the sake of illustration we consider here a simple case, the infamous *salamander mating data*, analysed by many authors (see, for example, Bellio and Varin (2005) and the references therein). The data are available in the `glmm` package:
+
+```{r data}
+library(glmm)
+data(salamander)
+summary(salamander)
+```
+
+Notice that the total sample size is just `r nrow(salamander)`, with
+the number of levels for the two random effects equal to `r length(unique(salamander$Male))` for either effect: for the aim of the ARC method, this is a sort of *toy example*. 
+
+For the application of the ARC methodology, we first fit a glm model without random effects and retrieve the design matrix and the response vector.
+
+```{r glm}
+mod.glm <- glm(Mate ~ Cross - 1, family = binomial("probit"), data = salamander)
+x <- model.matrix(mod.glm)
+y <- salamander$Mate
+```
+
+We then fit the random effects model by the `arcbin.fit` function:
+
+```{r arc fit}
+fit.arc <- arcbin.fit(x, y, f1 = salamander$Male, f2 = salamander$Female, obj_glm = mod.glm)
+```
+
+The estimated fixed effects and their standard errors are contained in the  fitted object
+
+```{r est}
+tabf <- cbind(fit.arc$beta, fit.arc$beta.se)
+colnames(tabf) <- c("Est.", "S.E.")
+options(digits = 3)
+knitr::kable(tabf)
+```
+
+as well as the estimated random effects standard deviations 
+
+```{r sigma}
+c(fit.arc$sigmaA, fit.arc$sigmaB)
+```
+
+For a comparison, we estimate the model using the `lme4` package (Bates, Maechler, Bolker and Walker, 2015), that integrates out the random effects by the 1st-order Laplace's approximation.
+
+```{r Lap}
+library(lme4)
+mod.sala <- glmer(Mate ~ Cross - 1 + (1|Male) + (1|Female), 
+                  family = binomial("probit"), data = salamander) 
+summary(mod.sala, cor = FALSE)
+```
+
+The two set of estimates are similar, but there are some differences,  due to the different methodology as well as to the small sample size. 
+
+The `arcprobit` package makes two other fitting routines available. The first one is a more scalable implementation of the estimation based on the Laplace approximation. That is, the same method implemented in `lme4::glmer`, but computationally more efficient due to the usage of the TMB package (Kristensen et al., 2016).
+
+```{r mylap}
+fit.lap <- lapbin.fit(x, y, f1 = salamander$Male, f2 = salamander$Female, gamma = mod.glm$coef)
+```
+
+The results are very close to those of the `glmer` fit, with small differences due to the different inner and outer optimisers employed.
+
+```{r reslap}
+c(fit.lap$beta)
+c(fit.lap$sigmaA, fit.lap$sigmaB)
+```
+
+The second fitting routine made available by the `arcprobit` package estimates the variance components by the pairwise likelihood estimation method (Bellio and Varin, 2005). At any rate, as illustrated in Bellio et al. (2023), this the method is not scalable at all for very large settings. However, like the ARC one, and differently from the Laplace's one, it provides a consistent estimator.  
+
+```{r pl}
+fit.pl <- plbin.fit(x, y, f1 = salamander$Male, f2 = salamander$Female, gamma = mod.glm$coef)
+```
+
+```{r respl}
+c(fit.pl$beta)
+c(fit.pl$sigmaA, fit.pl$sigmaB)
+```
+
+## The case of ordinal data 
+
+The ARC estimation approach can be applied also to ordinal data. Here for an illustration we employ the `InstEval` data from the `lme4` package.
+
+```{r data2}
+data(InstEval)
+summary(InstEval)
+```
+
+Here the total sample size is just `r nrow(InstEval)`, with
+the number of levels for the two random effects equal to `r length(unique(InstEval$s))`  for students and `r length(unique(InstEval$d))` for teachers, which is already out of reach for the existing R libraries for ordinal data models.
+ 
+We fit here a model which has been fitted by others treating the 5-category ordinal response as it were a continuous normal response. The `arcord.fit` function is employed for the task; the starting point is fitting a model for independent data, here made by employing the 
+`MASS` package (Venables and Ripley, 2002).
+
+```{r ordfit, message = FALSE}
+mod.polr <- MASS::polr(factor(y) ~ studage + lectage + service + dept, 
+                       method = "probit", data = InstEval)
+x <- model.matrix(mod.polr)[,-1]
+fit.arc <- arcord.fit(x, InstEval$y, f1 = InstEval$s, f2 = InstEval$d, obj_polr = mod.polr)
+```
+
+The estimated thresholds and the fixed effects and their standard errors are contained in the  fitted object:
+
+```{r est2}
+tabf <- cbind(fit.arc$alpha, fit.arc$alpha.se)
+tabf <- rbind(tabf, cbind(fit.arc$beta, fit.arc$beta.se))
+colnames(tabf) <- c("Est.", "S.E.")
+options(digits = 3)
+knitr::kable(tabf)
+```
+
+while the estimated random effects standard deviations are
+
+```{r sigma2}
+c(fit.arc$sigmaA, fit.arc$sigmaB)
+```
+
+Like for the binary case, the `arcprobit` provides also fitting functions implementing the Laplace's based method and the pairwise likelihood estimation. 
+
+## References
+- Bellio, R., Ghosh, S., Owen, A. and Varin, C. (2023). Scalable Estimation of Probit Models with Crossed Random Effects. Manuscript in preparation.
+
+- Bellio, R. and Varin, C. (2005). A pairwise likelihood approach to generalized linear models with crossed random effects. *Statistical Modelling*, 5(3), 217-227.
+
+- Bates, D., Maechler, M., Bolker, B. and
+  Walker, S. (2015). Fitting linear mixed-effects models
+  using \texttt{lme4}. *Journal of Statistical Software*, 67(1), 1-48. 
+
+- Kristensen, K.,  Nielsen, A., Berg, C.W.,
+  Skaug, H. and Bell, B.M. (2016). TMB: Automatic
+  differentiation and Laplace approximation. *Journal
+  of Statistical Software*, 70(5), 1-21.
+  
+- Venables, W.N., and Ripley, B.D. (2002). *Modern
+  Applied Statistics with S*. Fourth Edition.
+  Springer, New York. 
+
+
+
