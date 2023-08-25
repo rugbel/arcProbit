@@ -14,7 +14,6 @@
 #' row and column random effects.}
 #' @export
 #' @importFrom TMB MakeADFun
-#' @importFrom ucminf ucminf
 #' @examples
 #' library(glmm)
 #' data(salamander)
@@ -33,7 +32,7 @@ lapbin.fit <- function(x, y, f1, f2, gamma, lsA = log(0.5), lsB = log(0.5)){
                      b = numeric(length(unique(g2))))
   obj <- TMB::MakeADFun(data = data.list, parameters = parameters,
                         DLL = "binCross", silent  = TRUE,  random = c("a", "b"))
-  mle <- ucminf::ucminf(obj$par, obj$fn, obj$gr)
+  mle <- nlminb(obj$par, obj$fn, obj$gr)
   betaAB <- mle$par[1:p]
 	sigmaA <- exp(mle$par[p+1])
 	sigmaB <- exp(mle$par[p+2])
@@ -58,7 +57,6 @@ lapbin.fit <- function(x, y, f1, f2, gamma, lsA = log(0.5), lsB = log(0.5)){
 #' row and column random effects.}
 #' @export
 #' @importFrom TMB MakeADFun
-#' @importFrom ucminf ucminf
 #' @import lme4
 #' @importFrom MASS polr
 #' @examples
@@ -81,7 +79,7 @@ lapord.fit <- function(x, y, f1, f2, zeta, gamma,  lsA = log(0.5), lsB = log(0.5
                      b = numeric(length(unique(g2))))
   obj <- TMB::MakeADFun(data = data.list, parameters = parameters,
                         DLL = "ordCross", silent  = TRUE,  random = c("a", "b"))
-  mle <- ucminf::ucminf(obj$par, obj$fn, obj$gr)
+  mle <- nlminb(obj$par, obj$fn, obj$gr)
   betaAB <- mle$par[d:(d+p-1)]
   alphaAB <- mle$par[1:(d-1)]
   sigmaA <- exp(mle$par[d+p])
