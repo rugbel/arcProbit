@@ -5,5 +5,5 @@ A vignette is available with some illustrative examples.
 ## Installation
 ``` 
 #install.packages("remotes")
-remotes::install_github("rugbel/arcProbit", build = TRUE)
+remotes::install_github("rugbel/arcProbit", build_vignettes = TRUE)
 ```
