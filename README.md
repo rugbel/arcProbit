@@ -1,6 +1,6 @@
 # arcProbit
-This package can be used to estimate the probit model with crossed random effects, following the all-row-col estimation approach. 
-A vignette is available with some illustrative examples.
+This package can be used to estimate the probit model with crossed random effects, following the all-row-col estimation approach 
+proposed in https://arxiv.org/abs/2308.15681. A vignette is available with some illustrative examples.
 
 ## Installation
 ``` 
