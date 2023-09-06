@@ -117,10 +117,9 @@ summary(InstEval)
 ```
 
 Here the total sample size is just `r nrow(InstEval)`, with
-the number of levels for the two random effects equal to `r length(unique(InstEval$s))`  for students and `r length(unique(InstEval$d))` for teachers, which is already out of reach for the existing R libraries for ordinal data models.
+the number of levels for the two random effects equal to `r length(unique(InstEval$s))`  for students and `r length(unique(InstEval$d))` for teachers, which is already out of reach for the existing R libraries for ordinal data models. Indeed, other authors fitted a mixed model to this dataset by treating the 5-category ordinal response as it were a continuous normal response.
  
-We fit here a model which has been fitted by others treating the 5-category ordinal response as it were a continuous normal response. The `arcord.fit` function is employed for the task; the starting point is fitting a model for independent data, here made by employing the 
-`MASS` package (Venables and Ripley, 2002).
+We fit here an ordinal model by the `arcord.fit` function; the starting point is fitting a model for independent data, here made by employing the `MASS` package (Venables and Ripley, 2002).
 
 ```{r ordfit, message = FALSE}
 mod.polr <- MASS::polr(factor(y) ~ studage + lectage + service + dept, 
@@ -148,7 +147,7 @@ c(fit.arc$sigmaA, fit.arc$sigmaB)
 Like for the binary case, the `arcprobit` provides also fitting functions implementing the Laplace's based method and the pairwise likelihood estimation. 
 
 ## References
-- Bellio, R., Ghosh, S., Owen, A. and Varin, C. (2023). Scalable Estimation of Probit Models with Crossed Random Effects. Manuscript in preparation.
+- Bellio, R., Ghosh, S., Owen, A. and Varin, C. (2023). Scalable Estimation of Probit Models with Crossed Random Effects. https://arxiv.org/abs/2308.15681
 
 - Bellio, R. and Varin, C. (2005). A pairwise likelihood approach to generalized linear models with crossed random effects. *Statistical Modelling*, 5(3), 217-227.
 

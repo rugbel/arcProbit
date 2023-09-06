@@ -17,3 +17,4 @@ LazyData: true
 LazyLoad: yes
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr
+URL: http://github.com/rugbel/arcProbit
