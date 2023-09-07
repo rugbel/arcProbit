@@ -7,7 +7,7 @@ Maintainer: Ruggero Bellio <ruggero.bellio@uniud.it>
 Description: Functions for fitting probit models with crossed random effects, with binary and ordinal  
     data using the all-row-col estimation methods, plus some functions for other estimation
     methods.
-Depends: R (>= 4.3.0), statmod, sandwich, glmm, MASS, mvtnorm 
+Depends: R (>= 4.3.0), statmod, sandwich, glmm, MASS, mvtnorm, glmmTMB
 Imports: TMB
 LinkingTo: TMB, Rcpp, RcppArmadillo, RcppEigen, mvtnorm
 Suggests: knitr, rmarkdown
