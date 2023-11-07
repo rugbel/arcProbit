@@ -1,7 +1,7 @@
 Package: arcProbit
 Type: Package
 Title: ARC estimation of probit models with crossed random effects
-Version: 0.1.0
+Version: 0.2.0
 Author: Ruggero Bellio
 Maintainer: Ruggero Bellio <ruggero.bellio@uniud.it>
 Description: Functions for fitting probit models with crossed random effects, with binary and ordinal  
