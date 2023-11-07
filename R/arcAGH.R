@@ -45,11 +45,13 @@ arcbin.fit <- function(x, y, f1, f2, obj_glm, nq = 25, niter = 10,
   ## get the lists for taus
   listw1 <- split(w, f1)
   len1 <- unlist(lapply(listw1, length))
+  sel1 <- which(len1 == 1)
   which.list1 <- which(len1 > 1)
   listw1 <- listw1[which.list1]
   listeta1 <- split(eta, f1)[which.list1]
   listw2 <- split(w, f2)
   len2 <- unlist(lapply(listw2, length))
+  sel2 <- which(len2 == 1)
   which.list2 <- which(len2 > 1)
   listw2 <- listw2[which.list2]
   listeta2 <- split(eta, f2)[which.list2]
@@ -73,10 +75,18 @@ arcbin.fit <- function(x, y, f1, f2, obj_glm, nq = 25, niter = 10,
     {
      a.est <- getEffects(rhoa,  list_eta = listeta1, list_w = listw1, niter = niter,
                          ws = ws, z = obj.gh$nodes) * sqrt(sigma2A)
+     k1 <- length(unique(f1))
+     a.out <- numeric(k1)
+     a.out[sel1] <- 0
+     a.out[setdiff(1:k1, sel1)] <- a.est
      b.est <- getEffects(rhob, list_eta = listeta2, list_w = listw2, niter = niter,
                          ws = ws, z = obj.gh$nodes) * sqrt(sigma2B)
-    }
-  else a.est <- b.est <- NULL
+     k2 <- length(unique(f2))
+     b.out <- numeric(k2)
+     b.out[sel2] <- 0
+     b.out[setdiff(1:k2, sel2)] <- b.est
+     }
+  else a.out <- b.out <- NULL
   if(get_se)
   {
     df1f2 <- data.frame(f1 = f1, f2 = f2)
@@ -87,7 +97,7 @@ arcbin.fit <- function(x, y, f1, f2, obj_glm, nq = 25, niter = 10,
   else beta.se <- NULL
   return(list(beta = betaAB, beta.se = beta.se,
               sigmaA = sqrt(sigma2A), sigmaB = sqrt(sigma2B),
-              a.est = a.est, b.est = b.est))
+              a.est = a.out, b.est = b.out))
 }
 
 
