@@ -147,11 +147,13 @@ arcord.fit <- function(x, y, f1, f2, obj_polr, nq = 25, niter = 10,
   ## now the row- and columns-steps
   listy1 <- split(y, f1)
   len1 <- unlist(lapply(listy1, length))
+  sel1 <- which(len1 == 1)
   which.list1 <- which(len1 > 1)
   listy1 <- listy1[which.list1]
   listeta1 <- split(eta, f1)[which.list1]
   listy2 <- split(y, f2)
   len2 <- unlist(lapply(listy2, length))
+  sel2 <- which(len2 == 1)
   which.list2 <- which(len2 > 1)
   listy2 <- listy2[which.list2]
   listeta2 <- split(eta, f2)[which.list2]
@@ -176,9 +178,17 @@ arcord.fit <- function(x, y, f1, f2, obj_polr, nq = 25, niter = 10,
      a.est <- getEffectsOrd(rhoa, alphae = alphae, list_eta = listeta1,
                             list_y = listy1, niter = niter, ws = ws,
                             z = obj.gh$nodes) * sqrt(sigma2A)
+     k1 <- length(unique(f1))
+     a.out <- numeric(k1)
+     a.out[sel1] <- 0
+     a.out[setdiff(1:k1, sel1)] <- a.est
      b.est <- getEffectsOrd(rhob, alphae = alphae, list_eta = listeta2,
                             list_y = listy2, niter = niter, ws = ws,
                             z = obj.gh$nodes) * sqrt(sigma2B)
+     k2 <- length(unique(f2))
+     b.out <- numeric(k2)
+     b.out[sel2] <- 0
+     b.out[setdiff(1:k2, sel2)] <- b.est
     }
     else a.est <- b.est <- NULL
   if(get_se)
@@ -194,5 +204,5 @@ arcord.fit <- function(x, y, f1, f2, obj_polr, nq = 25, niter = 10,
   return(list(beta = betaAB, beta.se = beta.se,
               alpha = alphaAB, alpha.se = alpha.se,
               sigmaA = sqrt(sigma2A), sigmaB = sqrt(sigma2B),
-              a.est = a.est, b.est = b.est))
+              a.est = a.out, b.est = b.out))
 }
