@@ -190,7 +190,7 @@ arcord.fit <- function(x, y, f1, f2, obj_polr, nq = 25, niter = 10,
      b.out[sel2] <- 0
      b.out[setdiff(1:k2, sel2)] <- b.est
     }
-    else a.est <- b.est <- NULL
+    else a.out <- b.out <- NULL
   if(get_se)
   {
     df1f2 <- data.frame(f1 = f1, f2 = f2)
