@@ -2,18 +2,22 @@
 % Please edit documentation in R/arcProbit.R
 \docType{package}
 \name{arcProbit}
+\alias{arcProbit-package}
 \alias{arcProbit}
 \title{arcProbit: All-row-col fitting of categorical data models with crossed random effects}
 \description{
-The \code{arcProbit} package can be used to estimate the parameters of a p2 model
-for directed binary networks with correlated random effects. It implements
-(approximate) maximum likelihood estimation, following the methodology
-studied in ARC REF.
-}
-\details{
-A vignette is available with some illustrative examples.
+The \code{arcProbit} package can be used to estimate the parameters of mixed models for binary
+and ordinal data with crossed random effects. It implements the ARC estimation proposed in
+https://arxiv.org/abs/2308.15681. A vignette is available with some illustrative examples.
 }
 \references{
 Bellio, R., Ghosh, S., Owen, A. and Varin, C. (2023). Scalable Estimation of Probit Models with
-Crossed Random Effects. Manuscript in preparation.
+Crossed Random Effects. https://arxiv.org/abs/2308.15681
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{http://github.com/rugbel/arcProbit}
+}
+
 }
