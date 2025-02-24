@@ -7,6 +7,8 @@
 #' @param f1 Factor representing the row effects.
 #' @param f2 Factor representing the columns effects.
 #' @param gamma Numerical vector of estimated coefficients of binary data probit model.
+#' @param lsA  Numerical, starting value for logarithm of row effects standard deviation.
+#' @param lsB  Numerical, starting value for logarithm of column effects standard deviation.
 #' @return A list  containing the following components:
 #' \item{\code{beta}}{the vector of estimated coefficients.}
 #' \item{\code{alpha}}{the vector of estimated thresholds.}
@@ -46,10 +48,12 @@ lapbin.fit <- function(x, y, f1, f2, gamma, lsA = log(0.5), lsB = log(0.5)){
 #' @param y Response vector (binary data).
 #' @param f1 Factor representing the row effects.
 #' @param f2 Factor representing the columns effects.
-#' @param gamma Numerical vector of estimated coefficients of an ordinal data probit
-#' model for independent data.
 #' @param zeta Numerical vector of estimated thresholds of an ordinal data probit model
 #' for independent data.
+#' @param gamma Numerical vector of estimated coefficients of an ordinal data probit
+#' model for independent data.
+#' @param lsA  Numerical, starting value for logarithm of row effects standard deviation.
+#' @param lsB  Numerical, starting value for logarithm of column effects standard deviation.
 #' @return A list  containing the following components:
 #' \item{\code{beta}}{the vector of estimated coefficients.}
 #' \item{\code{alpha}}{the vector of estimated thresholds.}

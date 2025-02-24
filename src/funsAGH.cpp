@@ -4,6 +4,13 @@ using namespace Rcpp;
 
 
 // [[Rcpp::export]]
+double logsumexp(Rcpp::NumericVector x) {
+  return(log(sum(exp(x - max(x)))) + max(x));
+}
+
+
+
+// [[Rcpp::export]]
 double likAGH(double rho, Rcpp::List list_eta, Rcpp::List list_w, int niter, DoubleVector ws, DoubleVector z)
 {
   int len = list_w.size();
@@ -29,36 +36,26 @@ double likAGH(double rho, Rcpp::List list_eta, Rcpp::List list_w, int niter, Dou
       }
       ui += g / H;
     }
-   double se = 1.0 / sqrt(H);
-   int nq = ws.size();
-   // now computes AGH
-   double Ii = 0.0;
-   for (int k=0; k<nq; k++){
-   double zk = sqrt(2) * se * z[k] + ui;
-   double f = 0.0;
-   for (int j=0; j<ni; j++){
-      double arg = wi[j] * (etai[j] * sqrt(1.0 + sigma2) + sigma * zk);
-      f += R::pnorm(arg, 0.0, 1.0, 1, 1);
-      }
-    f += R::dnorm(zk, 0.0, 1.0, 1);
-    Ii += ws[k] * exp(f);
-     }
-    Ii *= se *   sqrt(2.0);
-    //If Ii == 0 then switch to Laplace
-    if(Ii == 0) {
-      double zk = ui;
-      double f = 0.0;
+    double se = 1.0 / sqrt(H);
+    int nq = ws.size();
+    // now computes AGH
+    NumericVector fi (nq);
+    for (int k=0; k<nq; k++){
+      double zk = sqrt(2) * se * z[k] + ui;
       for (int j=0; j<ni; j++){
         double arg = wi[j] * (etai[j] * sqrt(1.0 + sigma2) + sigma * zk);
-        f += R::pnorm(arg, 0.0, 1.0, 1, 1);
-       }
-      f += R::dnorm(zk, 0.0, 1.0, 1);
-      ll += log(1.772454) + f + log(se) + log(sqrt(2.0));
-     }
-    else ll += log(Ii);
-   }
+        fi[k] += R::pnorm(arg, 0.0, 1.0, 1, 1);
+      }
+      fi[k] += R::dnorm(zk, 0.0, 1.0, 1);
+      fi[k] += log(ws[k]);
+    }
+    double logIi = logsumexp(fi);
+    logIi += log(sqrt(2.0)) + log(se);
+    ll += logIi;
+  }
   return(ll);
 }
+
 
 
 
@@ -162,42 +159,23 @@ double likAGHOrd(double rho,  DoubleVector alphae, Rcpp::List list_eta, Rcpp::Li
    double se = 1.0 / sqrt(H);
    int nq = ws.size();
    // now computes AGH
-   double Ii = 0.0;
+   NumericVector fi (nq);
    for (int k=0; k<nq; k++){
-   double zk = sqrt(2) * se * z[k] + ui;
-   double f = 0.0;
-   for (int j=0; j<ni; j++){
-     double arg  = (alphae[yi[j]] - etai[j]) * sqrt(1.0 + sigma2) - sigma * zk;
-     double arg1 = (alphae[yi[j] - 1] - etai[j]) * sqrt(1.0 + sigma2) - sigma * zk;
-      double Phi = R::pnorm(arg, 0.0, 1.0, 1, 0);
-      double Phi1 = R::pnorm(arg1, 0.0, 1.0, 1, 0);
-      f += log(Phi - Phi1);
-      }
-    f += R::dnorm(zk, 0.0, 1.0, 1);
-    Ii += ws[k] * exp(f);
+     double zk = sqrt(2) * se * z[k] + ui;
+     for (int j=0; j<ni; j++){
+       double arg = (alphae[yi[j]] - etai[j]) * sqrt(1.0 + sigma2) - sigma * zk;
+       double arg1 = (alphae[yi[j] - 1] - etai[j]) * sqrt(1.0 + sigma2) - sigma * zk;
+       double Phi = R::pnorm(arg, 0.0, 1.0, 1, 0);
+       double Phi1 = R::pnorm(arg1, 0.0, 1.0, 1, 0);
+       fi[k] += log(Phi - Phi1);
      }
-    Ii *= se * sqrt(2.0);
-    //If Ii == 0 then switch to Laplace
-    if(Ii == 0) {
-      double zk = ui;
-      double f = 0.0;
-      for (int j=0; j<ni; j++){
-        double arg  = (alphae[yi[j]] - etai[j]) * sqrt(1.0 + sigma2) - sigma * zk;
-        double arg1 = (alphae[yi[j] - 1] - etai[j]) * sqrt(1.0 + sigma2) - sigma * zk;
-        double Phi = R::pnorm(arg, 0.0, 1.0, 1, 0);
-        double Phi1 = R::pnorm(arg1, 0.0, 1.0, 1, 0);
-        f += log(Phi - Phi1);
-       }
-      f += R::dnorm(zk, 0.0, 1.0, 1);
-      ll += log(1.772454) + f + log(se) + log(sqrt(2.0));
-     }
-     else ll += log(Ii);
-     }
+     fi[k] += R::dnorm(zk, 0.0, 1.0, 1);
+     fi[k] += log(ws[k]);
+   }
+   double logIi = logsumexp(fi);
+   logIi += log(sqrt(2.0)) + log(se);
+   ll += logIi;
+   }
   return(ll);
 }
-
-
-
-
-
 

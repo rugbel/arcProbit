@@ -12,6 +12,17 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// logsumexp
+double logsumexp(Rcpp::NumericVector x);
+RcppExport SEXP _arcProbit_logsumexp(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(logsumexp(x));
+    return rcpp_result_gen;
+END_RCPP
+}
 // likAGH
 double likAGH(double rho, Rcpp::List list_eta, Rcpp::List list_w, int niter, DoubleVector ws, DoubleVector z);
 RcppExport SEXP _arcProbit_likAGH(SEXP rhoSEXP, SEXP list_etaSEXP, SEXP list_wSEXP, SEXP niterSEXP, SEXP wsSEXP, SEXP zSEXP) {
@@ -122,6 +133,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_arcProbit_logsumexp", (DL_FUNC) &_arcProbit_logsumexp, 1},
     {"_arcProbit_likAGH", (DL_FUNC) &_arcProbit_likAGH, 6},
     {"_arcProbit_getEffects", (DL_FUNC) &_arcProbit_getEffects, 6},
     {"_arcProbit_getEffectsOrd", (DL_FUNC) &_arcProbit_getEffectsOrd, 7},

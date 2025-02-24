@@ -21,6 +21,10 @@ for independent data.}
 
 \item{gamma}{Numerical vector of estimated coefficients of an ordinal data probit
 model for independent data.}
+
+\item{lsA}{Numerical, starting value for logarithm of row effects standard deviation.}
+
+\item{lsB}{Numerical, starting value for logarithm of column effects standard deviation.}
 }
 \value{
 A list  containing the following components:

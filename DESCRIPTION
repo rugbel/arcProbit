@@ -1,13 +1,13 @@
 Package: arcProbit
 Type: Package
 Title: ARC estimation of probit models with crossed random effects
-Version: 0.2.0
+Version: 0.3.0
 Author: Ruggero Bellio
 Maintainer: Ruggero Bellio <ruggero.bellio@uniud.it>
 Description: Functions for fitting probit models with crossed random effects, with binary and ordinal  
     data using the all-row-col estimation methods, plus some functions for other estimation
     methods.
-Depends: R (>= 4.3.0), statmod, sandwich, glmm, MASS, mvtnorm, glmmTMB
+Depends: R (>= 4.3.0), sandwich, glmm, glmmTMB, statmod, MASS, mvtnorm, Rcpp, RcppArmadillo, lme4
 Imports: TMB
 LinkingTo: TMB, Rcpp, RcppArmadillo, RcppEigen, mvtnorm
 Suggests: knitr, rmarkdown
@@ -15,6 +15,6 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 LazyLoad: yes
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 VignetteBuilder: knitr
 URL: http://github.com/rugbel/arcProbit

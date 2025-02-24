@@ -16,6 +16,10 @@ lapbin.fit(x, y, f1, f2, gamma, lsA = log(0.5), lsB = log(0.5))
 \item{f2}{Factor representing the columns effects.}
 
 \item{gamma}{Numerical vector of estimated coefficients of binary data probit model.}
+
+\item{lsA}{Numerical, starting value for logarithm of row effects standard deviation.}
+
+\item{lsB}{Numerical, starting value for logarithm of column effects standard deviation.}
 }
 \value{
 A list  containing the following components:
