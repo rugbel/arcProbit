@@ -7,7 +7,7 @@
 #' @param f2 Factor representing the columns effects.
 #' @param obj_glm Object representing the glm fit of a probit model
 #' as returned by \code{glm}.
-#' @param nq Number of quadrature points. Default is 25.
+#' @param nq Number of quadrature points. Default is 5.
 #' @param niter Number of Newton-Raphson iteration to locate
 #' the mode of each random effect. Default is 10.
 #' @param get_effects Returns the random effects prediction.
@@ -35,7 +35,7 @@
 #' fit.arc <- arcbin.fit(x, y, f1 = salamander$Male, f2 = salamander$Female,
 #'                       obj_glm = mod.glm)
 #'
-arcbin.fit <- function(x, y, f1, f2, obj_glm, nq = 25, niter = 10,
+arcbin.fit <- function(x, y, f1, f2, obj_glm, nq = 5, niter = 10,
                        get_effects = FALSE, get_se = TRUE){
   ## transform ys to {-1, 1}
   w <- 2 * y - 1
@@ -108,7 +108,7 @@ arcbin.fit <- function(x, y, f1, f2, obj_glm, nq = 25, niter = 10,
 #' @param f2 Factor representing the columns effects.
 #' @param obj_polr Object representing the fit of an ordinal probit model
 #' as returned by \code{MASS::polr}.
-#' @param nq Number of quadrature points. Default is 25.
+#' @param nq Number of quadrature points. Default is 5.
 #' @param niter Number of Newton-Raphson iteration to locate
 #' the mode of each random effect. Default is 10.
 #' @param get_effects Returns the random effects prediction.
@@ -136,7 +136,7 @@ arcbin.fit <- function(x, y, f1, f2, obj_glm, nq = 25, niter = 10,
 #' x <- model.matrix(mod.polr)[,-1]
 #' fit.arc <- arcord.fit(x, InstEval$y, f1 = InstEval$s, f2 = InstEval$d, obj_polr = mod.polr)
 #'
-arcord.fit <- function(x, y, f1, f2, obj_polr, nq = 25, niter = 10,
+arcord.fit <- function(x, y, f1, f2, obj_polr, nq = 5, niter = 10,
                         get_effects = FALSE, get_se = TRUE){
   ## retrieve marginal parameters
   gamma <- obj_polr$coefficients
