@@ -76,7 +76,7 @@ lapord.fit <- function(x, y, f1, f2, zeta, gamma,  lsA = log(0.5), lsB = log(0.5
   g2 <- as.numeric(f2) - 1
   p <- ncol(x)
   d <- length(unique(y))
-  data.list <- list(X = x, y = y, d = d, maxtau = 100,
+  data.list <- list(X = x, y = as.numeric(y), d = d, maxtau = 100,
                     g1 = g1, g2 = g2)
   parameters <- list(tau = zeta, beta = gamma, lsigmaA = lsA, lsigmaB = lsB,
                      a = numeric(length(unique(g1))),
