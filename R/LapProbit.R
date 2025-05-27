@@ -45,7 +45,7 @@ lapbin.fit <- function(x, y, f1, f2, gamma, lsA = log(0.5), lsB = log(0.5)){
 #' Approximate MLE of an ordinal data probit model with crossed random effects based on the
 #' 1st-order Laplace's approximation.
 #' @param x Model matrix.
-#' @param y Response vector (binary data).
+#' @param y Response vector (ordinal data).
 #' @param f1 Factor representing the row effects.
 #' @param f2 Factor representing the columns effects.
 #' @param zeta Numerical vector of estimated thresholds of an ordinal data probit model
