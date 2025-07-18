@@ -7,9 +7,10 @@
 \description{
 The \code{arcProbit} package can be used to estimate the parameters of mixed models for binary
 and ordinal data with crossed random effects. It implements the ARC estimation proposed in
-https://arxiv.org/abs/2308.15681. A vignette is available with some illustrative examples.
+https://academic.oup.com/biomet/advance-article-abstract/doi/10.1093/biomet/asaf037/8149185?redirectedFrom=fulltext. 
+A vignette is available with some illustrative examples.
 }
 \references{
-Bellio, R., Ghosh, S., Owen, A. and Varin, C. (2023). Consistent and Scalable Composite Likelihood Estimation of Probit Models
-with Crossed Random Effects. https://arxiv.org/abs/2308.15681
+Bellio, R., Ghosh, S., Owen, A. and Varin, C. (2025). Consistent and Scalable Composite Likelihood Estimation of Probit Models
+with Crossed Random Effects. Biometrika, accepted for publication. 
 }
