@@ -147,7 +147,8 @@ c(fit.arc$sigmaA, fit.arc$sigmaB)
 Like for the binary case, the `arcprobit` provides also fitting functions implementing the Laplace's based method and the pairwise likelihood estimation. 
 
 ## References
-- Bellio, R., Ghosh, S., Owen, A. and Varin, C. (2023). Scalable Estimation of Probit Models with Crossed Random Effects. https://arxiv.org/abs/2308.15681
+- Bellio, R., Ghosh, S., Owen, A. and Varin, C. (2025). Consistent and Scalable Composite Likelihood Estimation of Probit Models with Crossed Random Effects.
+ *Biometrika*, to appear. DOI: https://doi.org/10.1093/biomet/asaf037
 
 - Bellio, R. and Varin, C. (2005). A pairwise likelihood approach to generalized linear models with crossed random effects. *Statistical Modelling*, 5(3), 217-227.
 
