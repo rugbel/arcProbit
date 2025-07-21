@@ -12,5 +12,5 @@ A vignette is available with some illustrative examples.
 }
 \references{
 Bellio, R., Ghosh, S., Owen, A. and Varin, C. (2025). Consistent and Scalable Composite Likelihood Estimation of Probit Models
-with Crossed Random Effects. Biometrika, accepted for publication. 
+with Crossed Random Effects. Biometrika, to appear.
 }
