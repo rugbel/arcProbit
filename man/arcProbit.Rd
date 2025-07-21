@@ -7,7 +7,7 @@
 \description{
 The \code{arcProbit} package can be used to estimate the parameters of mixed models for binary
 and ordinal data with crossed random effects. It implements the ARC estimation proposed in
-https://academic.oup.com/biomet/advance-article-abstract/doi/10.1093/biomet/asaf037/8149185?redirectedFrom=fulltext. 
+Bellio et al. (2025). 
 A vignette is available with some illustrative examples.
 }
 \references{
